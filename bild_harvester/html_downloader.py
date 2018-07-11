@@ -23,22 +23,31 @@ def download(url):
     data = response.read()      # a `bytes` object
     text = data.decode('utf-8') # a `str`; this step can't be used if data is binary)
     soup = BeautifulSoup(text, 'html.parser')
-    title_place = soup_to_title_place(soup)
     article_id = url[::-1].split('.')[2].split('-')[0][::-1]
-    title = title_place[1]
+    category_subcategory = get_category_subcategory(url)
+    category = category_subcategory[0]
+    sub_category = category_subcategory[1]
+    title = get_title(soup)
+    #cleanhtml(str(soup.title)).replace('\t', '').replace('„', "'").replace('“', "'").replace('"', "'").replace('-Bild.de','')
     author = get_author(soup)
-    datetime = get_datetime(soup)
-    place = title_place[0].split(':')[0]
+    publication_time = get_datetime(soup)
     text = soup_to_clean_text(soup)
-    article_array = []
-    article_array.append(article_id)
-    article_array.append(title)
-    article_array.append(author)
-    article_array.append(datetime)
-    article_array.append(place)
-    article_array.append(text)
+    article_array = [article_id, category, sub_category, title, author, publication_time, text]
     return article_array
         
+def get_title(soup):
+    title_array = cleanhtml(str(soup.title)).replace('\t', '').replace('„', "'").replace('“', "'").replace('"', "'").replace('-Bild.de','').split('-')
+    title = str(soup.title).replace(title_array[::-1][0], '').replace('\t', '').replace('Bild.de','').replace('-1414 Leser-Reporter -','')
+    title = cleanhtml(title).replace('-1414 Leser','').replace('--','')
+    print (title)
+    return title
+
+def get_category_subcategory(url):
+    category_subcategory = url.replace('https://www.bild.de','').replace('/news','')
+    category_subcategory = category_subcategory.split('/')
+    category = category_subcategory[1]
+    sub_category = category_subcategory[2]
+    return [category,sub_category]
 
 def soup_to_clean_text(soup):
     text = str(soup.find_all("div", class_="txt")[0].find_all('p'))
@@ -55,20 +64,15 @@ def soup_to_clean_text(soup):
         
     #removes sentences at the end of the text
     text = text.replace('<p><strong><em>Hier geht es zurück zu </em></strong></p>', '')
-
+    
     text = cleanhtml(text)
     
     #removes spare commas which are produced by previous steps
     text = text.replace(" , , ", '')
     text = text.replace(".,", '.')
-    
-    # removes place at the beginning of the text
-    text_split = text.split(' – ')
-    if len(text_split) > 1:
-        text = text_split[1]
-    
+    text = text.replace('PS: Sind Sie bei Facebook? !', '')
     # removes space brackets at the end of the text
-    text = text.replace(']','')
+    text = text.replace(']','').replace('[','')
     text = text.replace('"',"'")
     return text
 
@@ -79,16 +83,9 @@ def cleanhtml(raw_html):
     cleantext = cleantext.replace('\r', '').replace('\n', '')
     return cleantext
 
-# generates array containing title and place of the article from soup
-def soup_to_title_place(soup):
-    title = str(soup.title)
-    clean_title = cleanhtml(title).replace('\t', '')
-    return clean_title.split('-')
-
 def get_author(soup):
     author = soup.find_all("span", class_="authors__name")
     if (author == []):
-        print("no author")
         return ""
     else:
         return cleanhtml(str(soup.find_all("span", class_="authors__name")[0]))

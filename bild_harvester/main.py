@@ -9,11 +9,11 @@ def main():
     initilize_database()
     articles_urls = find_all_articles('https://www.bild.de/news/startseite')
     connection = sqlite3.connect("articles.db")
-    for url in articles_urls:
-        article_array = download(url)
+    articles_quantity = len(articles_urls)
+    for i in range (0,articles_quantity):
+        print('downloading: ',str(i+1),'/',str(articles_quantity))
+        article_array = download(articles_urls[i])
         connection = add_article(connection, article_array)
-    get_all_articles(connection)
+    #get_all_articles(connection)
 
-
-    
 main()

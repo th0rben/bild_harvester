@@ -6,6 +6,9 @@ import json
 import re
 from bs4 import BeautifulSoup
 
+#finds all articles in an url
+# e. g. 'https://www.bild.de/'
+#ignores pages of categories and advertisement
 def find_all_articles(url):
     response = urllib.request.urlopen(url)
     data = response.read()      # a `bytes` object
@@ -17,12 +20,15 @@ def find_all_articles(url):
         if  not (href.startswith("/video") or href.startswith("/bild-plus") or ("/startseite/" in href) or ("/ombudsmann/" in href) 
                  or ("dealsblock" in href) or ("geld/mein-geld/mein-geld/" in href) or ("ateaserseite" in href)
                  or ("bildconnect" in href) or ("corporate-site" in href) or ("epaper" in href)
-                 or ("shop.bild.de" in href) or ("/home-" in href)):
+                 or ("shop.bild.de" in href) or ("/home-" in href) or ("https://www." in href)):
             articles_urls.append('https://www.bild.de'+href)
         
     return articles_urls
 
-def download(url):
+#creates article dictionary from url
+#url must contains an article which
+#has an application/ld+json script
+def create_article_dictionary(url):
     print(url)
     response = urllib.request.urlopen(url)
     data = response.read()      # a `bytes` object
@@ -37,11 +43,15 @@ def download(url):
     
     return article_dictionary
 
+#cuts out category and subcategory from url
 def get_category_subcategory(url):
     category_subcategory = url.replace('https://www.bild.de','').replace('/news','').split('/')
     dict = {"category":category_subcategory[1],"sub_category":category_subcategory[2]}
     return dict
 
+#extracts article text from soup
+#removes any kind of noise:
+#advertisement and tags
 def soup_to_clean_text(soup):
     text = str(soup.find_all("div", class_="txt")[0].find_all('p'))
     advertisements = soup.find_all("p", class_="entry-content")
@@ -64,6 +74,7 @@ def soup_to_clean_text(soup):
     text = text.replace(']','').replace('[','').replace('"',"'")
     return text
 
+#remove everything in delimiters and delimiters
 def remove_tags(raw_html):
     cleanr = re.compile('<.*?>')
     cleantext = re.sub(cleanr, '', raw_html)

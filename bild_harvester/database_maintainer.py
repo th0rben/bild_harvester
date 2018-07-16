@@ -3,6 +3,8 @@
 '''
 import sqlite3
 
+#sets up an SQLLite Database 'articles'
+#creates table: 'articles' in the database
 def initilize_database():
     connection = sqlite3.connect("articles.db")
 
@@ -27,6 +29,9 @@ def initilize_database():
     connection.commit()
     return connection
 
+#adds an article in to the database
+#the article data is in article_dictionary
+#article_dictionary needs to be well formed
 def add_article(connection, article_dictionary):
     cursor = connection.cursor()
     
@@ -46,19 +51,11 @@ def add_article(connection, article_dictionary):
     connection.commit()
     return connection
 
-def get_all_articles(connection):
+#print every row in the tables: 'articles'
+def print_all_articles(connection):
     cursor = connection.cursor()
     cursor.execute("SELECT * FROM articles") 
     print("fetchall:")
     result = cursor.fetchall() 
     for r in result:
         print(r)
-        
-def get_all_tables(connection):
-    cursor = connection.cursor()
-    sql_command = """SELECT name FROM sqlite_master WHERE type='table';"""
-    cursor.execute(sql_command)
-    connection.commit()
-
-    connection.close()
-    return connection

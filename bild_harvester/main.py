@@ -4,8 +4,7 @@
 from bild_harvester.html_downloader import create_article_dictionary, find_all_articles
 from bild_harvester.database_maintainer import add_article, initilize_database
 import sqlite3
-#import schedule
-#import time
+import smtplib
 
 def main():
     initilize_database()
@@ -18,12 +17,10 @@ def main():
         article_array = create_article_dictionary(articles_urls[i])
         connection = add_article(connection, article_array)
     print('downloading completed')
+    smtp_server = smtplib.SMTP_SSL(server, port)
+    smtp_server.login(sender, password)
+    message = "Subject: {}\n\n{}".format(subject, text)
+    smtp_server.sendmail(sender, recipient, message)
+    smtp_server.close()
 
 main()
-
-#https://stackoverflow.com/a/30393162
-#this script executes the harvester every day at 1:00
-#schedule.every().day.at("01:00").do(main)
-#while True:
-#    schedule.run_pending()
-#    time.sleep(60) # wait one minute

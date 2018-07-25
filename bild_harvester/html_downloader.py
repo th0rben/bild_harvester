@@ -17,10 +17,19 @@ def find_all_articles(url):
     articles_urls = []
     for a in soup.find_all('a', href=True, rel='bookmark'):
         href = a['href']
-        if  not (href.startswith("/video") or href.startswith("/bild-plus") or ("/startseite/" in href) or ("/ombudsmann/" in href) 
-                 or ("dealsblock" in href) or ("geld/mein-geld/mein-geld/" in href) or ("ateaserseite" in href)
-                 or ("bildconnect" in href) or ("corporate-site" in href) or ("epaper" in href)
-                 or ("shop.bild.de" in href) or ("/home-" in href) or ("https://www." in href)):
+        if  not (href.startswith("/video") 
+                 or href.startswith("/bild-plus") 
+                 or ("/startseite/" in href) 
+                 or ("/ombudsmann/" in href) 
+                 or ("dealsblock" in href) 
+                 or ("geld/mein-geld/mein-geld/" in href) 
+                 or ("ateaserseite" in href)
+                 or ("bildconnect" in href) 
+                 or ("corporate-site" in href) 
+                 or ("epaper" in href)
+                 or ("shop.bild.de" in href) 
+                 or ("/home-" in href) 
+                 or ("https://www." in href)):
             articles_urls.append('https://www.bild.de'+href)
         
     return articles_urls
@@ -29,7 +38,6 @@ def find_all_articles(url):
 #url must contains an article which
 #has an application/ld+json script
 def create_article_dictionary(url):
-    print(url)
     response = urllib.request.urlopen(url)
     data = response.read()      # a `bytes` object
     text = data.decode('utf-8') # a `str`; this step can't be used if data is binary)

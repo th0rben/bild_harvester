@@ -35,17 +35,27 @@ def initilize_database():
 def add_article(connection, article_dictionary):
     cursor = connection.cursor()
     
-    format_str = """INSERT OR IGNORE INTO articles (url, article_id, category, sub_category, author,
-    datePublished, dateModified, keywords, isFamilyFriendly, headline, description, text)
-    VALUES ("{url}", "{article_id}", "{category}", "{sub_category}", "{author}", "{datePublished}", "{dateModified}",
-    "{keywords}", "{isFamilyFriendly}", "{headline}", "{description}", "{text}");"""
+    format_str = """INSERT OR IGNORE INTO articles 
+    (url, article_id, category, sub_category, author,
+    datePublished, dateModified, keywords, isFamilyFriendly, 
+    headline, description, text)
+    VALUES ("{url}", "{article_id}", "{category}", "{sub_category}", 
+    "{author}", "{datePublished}", "{dateModified}",
+    "{keywords}", "{isFamilyFriendly}", "{headline}", 
+    "{description}", "{text}");"""
     sql_command = format_str.format(
-        url=article_dictionary['url'], article_id=int(article_dictionary['article_id']), 
-        category=article_dictionary['category'], sub_category=article_dictionary['sub_category'], 
-        author=article_dictionary['author']['name'], datePublished=article_dictionary['datePublished'], 
-        dateModified=article_dictionary['dateModified'], keywords=article_dictionary['keywords'], 
-        isFamilyFriendly=article_dictionary['isFamilyFriendly'], headline=article_dictionary['headline'], 
-        description=article_dictionary['description'], text=article_dictionary['text'])
+        url=article_dictionary['url'], 
+        article_id=int(article_dictionary['article_id']), 
+        category=article_dictionary['category'], 
+        sub_category=article_dictionary['sub_category'], 
+        author=article_dictionary['author']['name'], 
+        datePublished=article_dictionary['datePublished'], 
+        dateModified=article_dictionary['dateModified'], 
+        keywords=article_dictionary['keywords'], 
+        isFamilyFriendly=article_dictionary['isFamilyFriendly'], 
+        headline=article_dictionary['headline'], 
+        description=article_dictionary['description'], 
+        text=article_dictionary['text'])
     
     cursor.execute(sql_command)
     connection.commit()

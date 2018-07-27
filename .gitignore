@@ -1,4 +1,3 @@
-
 *.db
-
+*.log
 */login_data.py

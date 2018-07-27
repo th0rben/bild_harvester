@@ -54,8 +54,7 @@ def create_article_dictionary(url):
 #cuts out category and subcategory from url
 def get_category_subcategory(url):
     category_subcategory = url.replace('https://www.bild.de','').replace('/news','').split('/')
-    dict = {"category":category_subcategory[1],"sub_category":category_subcategory[2]}
-    return dict
+    return {"category":category_subcategory[1],"sub_category":category_subcategory[2]}
 
 #extracts article text from soup
 #removes any kind of noise:

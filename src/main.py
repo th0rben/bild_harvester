@@ -51,7 +51,7 @@ def save_articles_sqllite(root_url):
 
 # write log to file
 def logging(text):
-    file = open('bild_harvester.log','w') 
+    file = open('downloads.log','w') 
     file.write(text) 
     file.close()
 

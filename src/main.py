@@ -5,16 +5,12 @@ import sqlite3
 import smtplib
 import datetime
 import sys
-from bild_harvester.html_downloader import create_article_dictionary, find_all_articles
-from bild_harvester.database_maintainer import add_article, initilize_database
-from login_data import sender, recipient, password
-from login_data import subject, server, port
+from src.html_downloader import create_article_dictionary, find_all_articles
+from src.database_maintainer import add_article, initilize_database
+from src.login_data import sender, recipient, password
+from src.login_data import subject, server, port
 
-def main():
-    root_url = 'https://www.bild.de/'
-    text = save_articles_sqllite(root_url)
-    sendmail(text)
-    #print(text)
+
 
 # send text as email
 def sendmail(text):
@@ -54,5 +50,11 @@ def logging(text):
     file = open('downloads.log','w') 
     file.write(text) 
     file.close()
+    
+def main():
+    root_url = 'https://www.bild.de/'
+    text = save_articles_sqllite(root_url)
+    sendmail(text)
+    #print(text)
 
 main()

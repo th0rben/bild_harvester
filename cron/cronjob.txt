@@ -1,1 +1,0 @@
-0 12 * * * /usr/bin/python /home/git/news-scraper/src/main.py

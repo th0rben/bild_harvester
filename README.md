@@ -37,6 +37,8 @@ To scrap every day at 12:00 execute:
 cd where/you/saved/it/news-scraper
 sudo chmod +x setup.sh
 .setup.sh
+sudo crontab -e
+0 18 * * 1 /home/pi/git/news-scraper/cron/cron.sh
 ```
 
 If you want to change the frequency or time: Change [cronjob.txt](/src/cron/cronjob.txt) 

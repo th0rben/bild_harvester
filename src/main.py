@@ -5,10 +5,10 @@ import sqlite3
 import smtplib
 import datetime
 import sys
-from src.html_downloader import create_article_dictionary, find_all_articles
-from src.database_maintainer import add_article, initilize_database
-from src.login_data import sender, recipient, password
-from src.login_data import subject, server, port
+from html_downloader import create_article_dictionary, find_all_articles
+from database_maintainer import add_article, initilize_database
+from login_data import sender, recipient, password
+from login_data import subject, server, port
 
 
 

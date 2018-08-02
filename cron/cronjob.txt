@@ -1,0 +1,2 @@
+0 12 * * * /usr/bin/python /home/git/news-scraper/src/main.py
+0 1 * * 1 git/news-scraper/cron/cron_pull.sh

@@ -13,6 +13,8 @@ pip install beautifulsoup4
 
 2. Clone the repository
 ```bash
+mkdir git
+cd git
 git clone https://github.com/th0rben/news-scraper.git
 ```
 3. For sending e-mails you need to create a file named: **login_data.py** in src folder. It should look this (example for using gmail):
@@ -32,10 +34,12 @@ Execute the **main.py** file
 To scrap every day at 12:00 execute:
 (adds cronjob to crontab)
 ```bash
-crontab /git/src/cronjob.txt
+sudo chmod +x /git/news-scraper/setup.sh
+./git/news-scraper/setup.sh
+sudo crontab /git/news-scraper/cron/cronjob.txt
 ```
 
-If you want to change the frequency or time: Change [cronjob.txt](/src/cronjob.txt) 
+If you want to change the frequency or time: Change [cronjob.txt](/src/cron/cronjob.txt) 
 
 For mor information see: [https://en.wikipedia.org/wiki/Cron](https://en.wikipedia.org/wiki/Cron)
 

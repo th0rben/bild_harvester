@@ -34,9 +34,9 @@ Execute the **main.py** file
 To scrap every day at 12:00 execute:
 (adds cronjob to crontab)
 ```bash
-sudo chmod +x /git/news-scraper/setup.sh
-./git/news-scraper/setup.sh
-sudo crontab /git/news-scraper/cron/cronjob.txt
+cd where/you/saved/it/news-scraper
+sudo chmod +x setup.sh
+.setup.sh
 ```
 
 If you want to change the frequency or time: Change [cronjob.txt](/src/cron/cronjob.txt) 

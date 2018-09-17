@@ -28,6 +28,7 @@ def find_all_articles(url):
                  or ("corporate-site" in href) 
                  or ("epaper" in href)
                  or ("shop.bild.de" in href) 
+                 or ("sport.bild.de" in href) 
                  or ("/home-" in href) 
                  or ("https://www." in href)):
             articles_urls.append('https://www.bild.de'+href)

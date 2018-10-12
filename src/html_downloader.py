@@ -27,7 +27,9 @@ def find_all_articles(url):
                  or ("bildconnect" in href) 
                  or ("corporate-site" in href) 
                  or ("epaper" in href)
-                 or ("shop.bild.de" in href) 
+                 or ("shop.bild.de" in href)
+                 or ("shop.bildplus.de" in href)
+                 or ("video-serie" in href) 
                  or ("sport.bild.de" in href) 
                  or ("/home-" in href) 
                  or ("https://www." in href)):

@@ -5,6 +5,7 @@ import sqlite3
 import smtplib
 import datetime
 import sys
+import os
 from html_downloader import create_article_dictionary, find_all_articles
 from database_maintainer import add_article, initilize_database
 from login_data import sender, recipient, password
@@ -51,10 +52,16 @@ def logging(text):
     file.write(text) 
     file.close()
     
+def get_file_size(path):
+    file_size_bytes = os.path.getsize(path)
+    file_size_gigabyte = file_size_bytes / 1000000000
+    return "the database is" + str(file_size_gigabyte) + "GB large"
+    
 def main():
     root_url = 'https://www.bild.de/'
     text = save_articles_sqllite(root_url)
-    sendmail(text)
+    database_info = get_file_size("articles.db")
+    sendmail(text + database_info)
     #print(text)
 
 main()

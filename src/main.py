@@ -7,7 +7,7 @@ import datetime
 import sys
 import os
 from html_downloader import create_article_dictionary, find_all_articles
-from database_maintainer import add_article, initilize_database
+from database_maintainer import add_article, initilize_database, count_table_entries
 from login_data import sender, recipient, password
 from login_data import subject, server, port
 
@@ -38,7 +38,7 @@ def save_articles_sqllite(root_url):
             log = log + str(i+1)+'/'+str(articles_quantity)+ ' ' + url + '\n'
             article_array = create_article_dictionary(url)
             connection = add_article(connection, article_array)
-        message = now + ' ' + str(articles_quantity) + ' articles successfully downloaded'
+        message = now + str(articles_quantity) + ' articles successfully downloaded'
     except:
         message = now + 'ERROR: \n'
         e = sys.exc_info()[0]
@@ -51,17 +51,20 @@ def logging(text):
     file = open('downloads.log','w') 
     file.write(text) 
     file.close()
-    
+
+ 
 def get_file_size(path):
     file_size_bytes = os.path.getsize(path)
     file_size_gigabyte = file_size_bytes / 1000000000
-    return "the database is" + str(file_size_gigabyte) + "GB large"
+    return "The database is now: " + str(file_size_gigabyte) + "GB large"
     
 def main():
     root_url = 'https://www.bild.de/'
     text = save_articles_sqllite(root_url)
-    database_info = get_file_size("articles.db")
-    sendmail(text + database_info)
+    database_size = get_file_size("articles.db")
+    connection = sqlite3.connect("articles.db")
+    database_entries_quantity = count_table_entries(connection)
+    sendmail(text + "\n" + database_size + "\n" + "and contains " + database_entries_quantity + " entries")
     #print(text)
 
 main()

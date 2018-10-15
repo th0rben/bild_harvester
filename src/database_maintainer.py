@@ -69,3 +69,9 @@ def print_all_articles(connection):
     result = cursor.fetchall() 
     for r in result:
         print(r)
+        
+def count_table_entries(connection):
+    cursor = connection.cursor()
+    cursor.execute("SELECT count(*) FROM articles") 
+    result = cursor.fetchall()[0][0]
+    return str(result)

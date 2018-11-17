@@ -47,9 +47,13 @@ def create_article_dictionary(url):
     soup = BeautifulSoup(text, 'html.parser')
     article_json = soup.find('script', {'type':'application/ld+json'})
     article_dictionary = json.loads(str(article_json).replace('<script type="application/ld+json">', '').replace('</script>', ''), strict=False)
-    article_dictionary['article_id'] = url[::-1].split('.')[2].split('-')[0][::-1]
-    article_dictionary.update(get_category_subcategory(url))
-    article_dictionary['text'] = soup_to_clean_text(soup)
+    #excludes overviews over articles
+    if (article_dictionary['@type']==('Organization')):
+        article_dictionary = "no_article"
+    else:
+        article_dictionary['article_id'] = url[::-1].split('.')[2].split('-')[0][::-1]
+        article_dictionary.update(get_category_subcategory(url))
+        article_dictionary['text'] = soup_to_clean_text(soup)
     
     return article_dictionary
 

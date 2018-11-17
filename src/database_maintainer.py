@@ -34,6 +34,8 @@ def initilize_database():
 #article_dictionary needs to be well formed
 def add_article(connection, article_dictionary):
     cursor = connection.cursor()
+    if(article_dictionary=="no_article"):
+        return connection
     
     format_str = """INSERT OR IGNORE INTO articles 
     (url, article_id, category, sub_category, author,

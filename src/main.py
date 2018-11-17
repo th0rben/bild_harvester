@@ -27,22 +27,25 @@ def sendmail(text):
 # articles and all potential errors
 def save_articles_sqllite(root_url):
     initilize_database()
+    success_count = 0
     articles_urls = find_all_articles(root_url)
     connection = sqlite3.connect("articles.db")
     articles_quantity = len(articles_urls)
     now = str(datetime.datetime.now()) + '\n'
     log = '----- \n start downloading at: ' + now
-    try:
-        for i in range (0,articles_quantity):
+    message = now
+    for i in range (0,articles_quantity):
+        try:
             url = articles_urls[i]
             log = log + str(i+1)+'/'+str(articles_quantity)+ ' ' + url + '\n'
             article_array = create_article_dictionary(url)
             connection = add_article(connection, article_array)
-        message = now + str(articles_quantity) + ' articles successfully downloaded'
-    except:
-        message = now + 'ERROR: \n'
-        e = sys.exc_info()[0]
-        message = message + str(e) + ' at ' + url
+            success_count = success_count + 1
+        except:
+            e = sys.exc_info()[0]
+            message = message + '\n' + str(e) + ' at ' + url + '/n'
+    message = message + str(success_count) + ' of '+ str(articles_quantity) + ' detected articles successfully downloaded'
+
     logging(log)
     return message
 
